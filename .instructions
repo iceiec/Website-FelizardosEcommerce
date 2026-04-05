@@ -1,0 +1,238 @@
+# Event Scheduling & Management Dashboard - Installation Guide
+
+## Project Overview
+This is a professional event scheduling and management dashboard built with Next.js 16, React 19, Tailwind CSS, and shadcn/ui components. It manages facilities including pavilion, pool, and basketball courts with full payment tracking, calendar views, and filtering capabilities.
+
+## Prerequisites
+- Node.js 18.17 or later
+- npm, yarn, pnpm, or bun package manager
+- Git (for version control)
+
+## Installation Methods
+
+### Method 1: Using the v0 Provided Code (Recommended)
+1. **Download from v0**: Click the three dots menu and select "Download ZIP"
+2. **Extract the ZIP file** to your desired location
+3. Navigate to the project directory:
+   ```bash
+   cd event-scheduling-dashboard
+   ```
+4. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+5. Run the development server:
+   ```bash
+   pnpm dev
+   ```
+6. Open http://localhost:3000 in your browser
+
+### Method 2: Clone from GitHub
+1. Create a new GitHub repository
+2. Push the v0 code to GitHub:
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit: Event scheduling dashboard"
+   git branch -M main
+   git remote add origin https://github.com/YOUR_USERNAME/event-scheduling-dashboard.git
+   git push -u origin main
+   ```
+3. Clone to your machine:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/event-scheduling-dashboard.git
+   cd event-scheduling-dashboard
+   ```
+4. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+5. Run development server:
+   ```bash
+   pnpm dev
+   ```
+
+### Method 3: Create New Next.js Project and Copy Files
+1. Create a new Next.js project:
+   ```bash
+   npx create-next-app@latest event-scheduling-dashboard
+   ```
+   - Select TypeScript: Yes
+   - Select Tailwind CSS: Yes
+   - Select shadcn/ui: Yes
+   
+2. Copy the following directories from the v0 project:
+   - `/app` - All pages and layouts
+   - `/components/dashboard` - Dashboard components
+   - `/lib/mock-data.ts` - Mock data for the application
+   - `/public` - Any public assets
+
+3. Install additional dependencies:
+   ```bash
+   pnpm add recharts date-fns lucide-react
+   ```
+
+4. Copy the `globals.css` to replace the default one
+
+5. Run development server:
+   ```bash
+   pnpm dev
+   ```
+
+## Project Structure
+```
+event-scheduling-dashboard/
+├── app/
+│   ├── dashboard/
+│   │   ├── pavilion/page.tsx         # Pavilion event management
+│   │   ├── pool/page.tsx             # Pool event management
+│   │   ├── basketball/page.tsx       # Basketball court scheduling
+│   │   ├── maintenance/page.tsx      # Maintenance tracking
+│   │   ├── settings/page.tsx         # Admin settings
+│   │   └── page.tsx                  # Dashboard overview
+│   ├── login/page.tsx                # Login page
+│   ├── page.tsx                      # Home redirect
+│   ├── layout.tsx                    # Root layout
+│   └── globals.css                   # Global styles
+├── components/
+│   ├── dashboard/
+│   │   ├── sidebar.tsx               # Navigation sidebar
+│   │   ├── event-calendar.tsx        # Event calendar component
+│   │   └── [other dashboard components]
+│   └── ui/                           # shadcn/ui components
+├── lib/
+│   ├── mock-data.ts                  # Mock data for events
+│   └── utils.ts                      # Utility functions
+├── public/                           # Static assets
+├── package.json                      # Project dependencies
+└── tsconfig.json                     # TypeScript configuration
+```
+
+## Features
+
+### Dashboard Overview
+- Monthly revenue breakdown charts
+- Event statistics
+- Financial summary by facility
+
+### Pavilion Management
+- Schedule events with start/end times
+- Track total amount and deposit amount
+- Filter by status (Confirmed, Pending, Cancelled)
+- Calendar view of scheduled events
+- Edit and delete events
+- PDF export functionality
+
+### Pool Management
+- Similar to pavilion with pool-specific configurations
+- Time slot management
+- Payment tracking
+
+### Basketball Courts Management
+- Manage two courts: Andoy Court and Juliet Court
+- Custom time slots for each court
+- Date filtering for availability
+- Filter by court and booking status
+- Track payment amounts per booking
+
+### Maintenance Tracking
+- Log maintenance activities and costs
+- View maintenance history
+- Cost summaries and statistics
+- Individual record PDF export
+
+### Settings
+- Facility information configuration
+- Notification preferences
+- Security settings
+- Team member management
+
+## Authentication
+The dashboard includes a basic login system that uses localStorage. To access the dashboard:
+1. Go to http://localhost:3000
+2. You'll be redirected to the login page
+3. Enter any credentials (the system accepts any input for demo purposes)
+4. Click "Login" to access the dashboard
+
+## Data Management
+- **Mock Data**: The application uses mock data stored in `/lib/mock-data.ts`
+- **State Management**: React hooks (useState) manage all state
+- **Persistence**: Currently data is stored in component state only. For production, integrate with a backend API or database
+
+## Development
+
+### Available Scripts
+```bash
+pnpm dev       # Start development server
+pnpm build     # Build for production
+pnpm start     # Start production server
+pnpm lint      # Run ESLint
+```
+
+### Adding New Events/Records
+All management pages follow the same pattern:
+1. Click "Schedule Event" or relevant button to open form
+2. Fill in the required fields
+3. Click "Add Event" or "Update Event"
+4. View changes in the table immediately
+
+### Customization
+- **Colors**: Edit CSS custom properties in `app/globals.css`
+- **Mock Data**: Modify `lib/mock-data.ts` to add/change sample data
+- **Components**: Update components in `components/dashboard/`
+
+## Deployment
+
+### Deploy to Vercel (Recommended)
+1. Push your code to GitHub
+2. Go to https://vercel.com and sign in
+3. Click "Add New" → "Project"
+4. Import your GitHub repository
+5. Click "Deploy"
+
+### Deploy to Other Platforms
+The project is a standard Next.js application and can be deployed to:
+- Netlify
+- AWS Amplify
+- Azure Static Web Apps
+- Any Node.js hosting
+
+## Troubleshooting
+
+### Port Already in Use
+If port 3000 is in use, run:
+```bash
+pnpm dev -p 3001
+```
+
+### Missing Dependencies
+If you get module not found errors:
+```bash
+pnpm install
+```
+
+### Build Errors
+Clear the cache and rebuild:
+```bash
+rm -rf .next
+pnpm build
+```
+
+## Next Steps for Production
+
+1. **Replace Mock Data**: Connect to a real database (PostgreSQL, MongoDB, etc.)
+2. **Implement Real Authentication**: Use Auth.js, NextAuth, or similar
+3. **Add Backend API**: Create API routes for data persistence
+4. **Implement Row-Level Security**: Ensure users can only access their own data
+5. **Add Email Notifications**: Notify clients about event confirmations
+6. **Setup Payment Integration**: Integrate Stripe or similar for payments
+
+## Support & Documentation
+- Next.js: https://nextjs.org/docs
+- React: https://react.dev
+- shadcn/ui: https://ui.shadcn.com
+- Tailwind CSS: https://tailwindcss.com
+- Recharts: https://recharts.org
+
+## License
+This project is open source and available under the MIT License.
