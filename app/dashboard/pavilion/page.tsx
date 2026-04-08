@@ -1,5 +1,6 @@
 'use client';
 
+
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,12 +9,13 @@ import { Badge } from '@/components/ui/badge';
 import { pavilionEvents } from '@/lib/mock-data';
 import { EventCalendar } from '@/components/dashboard/event-calendar';
 import { Plus, Edit2, Trash2, FileText } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 
 export default function PavilionPage() {
   const [events, setEvents] = useState(pavilionEvents);
@@ -83,6 +85,7 @@ export default function PavilionPage() {
     setDialogOpen(true);
   };
 
+  
   const resetForm = () => {
     setFormData({
       date: '',
@@ -98,6 +101,46 @@ export default function PavilionPage() {
     });
     setEditingId(null);
   };
+
+  async function loadEvents() {
+    const res = await fetch("/api/pavillion");
+    if (!res.ok) throw new Error ("Failed to load events.");
+    const data = await res.json();
+    setEvents(data);
+    }
+
+    useEffect(() => {
+      loadEvents();
+    }, []);
+  
+  async function handleUpdate() {
+  if (!editingId) return;
+
+  const res = await fetch("/api/pavillion", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id: editingId,
+      ...formData,
+    }),
+  });
+
+  if (!res.ok) {
+    console.error("Failed to update event");
+    return;
+  }
+
+  const updated = await res.json();
+
+  setEvents((prev) =>
+    prev.map((event) => (event.id === updated.id ? updated : event))
+  );
+
+  resetForm();
+  setDialogOpen(false);
+}
+
+
 
   const handleExportPDF = () => {
     const printWindow = window.open('', '', 'height=600,width=800');
